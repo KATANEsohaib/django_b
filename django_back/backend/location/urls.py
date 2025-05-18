@@ -8,10 +8,11 @@ from .views import (
 
 urlpatterns = [
     path('voitures/', get_all_voitures),
-    path('voitures/<int:pk>/', get_by_id_voiture),
     path('voitures/create/', create_voiture),
-    path('voitures/<int:pk>/', update_voiture),
-    path('voitures/<int:pk>/', delete_voiture),
+    path('voitures/<int:pk>/', get_by_id_voiture),  # GET
+    path('voitures/update/<int:pk>/', update_voiture),  # PUT
+    path('voitures/delete/<int:pk>/', delete_voiture),  # DELETE
+
     path('users/', get_all_users),
     path('users/<int:pk>/', get_user_by_id),
     path('users/create/', create_user),
