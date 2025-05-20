@@ -1,30 +1,23 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
+from django.utils import timezone
 
-from .models import Voiture
-from .serializers import VoitureSerializer
-
-from .models import User
-from .serializers import UserSerializer
-
-from .models import Commentaire
-from .serializers import CommentaireSerializer
-
-from .models import Reservation
-from .serializers import ReservationSerializer
+from .models import Voiture, User, Commentaire, Reservation
+from .serializers import VoitureSerializer, UserSerializer, CommentaireSerializer, ReservationSerializer
 
 @api_view(['GET'])
 def get_all_voitures(request):
     voitures = Voiture.objects.all()
     serializer = VoitureSerializer(voitures, many=True)
-    return Response({"voitures":serializer.data})
+    return Response({"voitures": serializer.data})
 
 @api_view(['GET'])
-def get_by_id_voiture(request,pk):
-    voitures = get_object_or_404(Voiture, id=pk)
-    serializer = VoitureSerializer(voitures, many=False)
-    return Response({"voiture":serializer.data})
+def get_by_id_voiture(request, pk):
+    voiture = get_object_or_404(Voiture, id=pk)
+    serializer = VoitureSerializer(voiture, many=False)
+    return Response({"voiture": serializer.data})
 
 @api_view(['PUT'])
 def update_voiture(request, pk):
@@ -38,7 +31,6 @@ def update_voiture(request, pk):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=400)
-
 
 @api_view(['DELETE'])
 def delete_voiture(request, pk):
@@ -57,8 +49,6 @@ def create_voiture(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
-
-
 
 @api_view(['GET'])
 def get_all_users(request):
@@ -84,7 +74,7 @@ def create_user(request):
 def get_all_commentaires(request):
     commentaires = Commentaire.objects.all()
     serializer = CommentaireSerializer(commentaires, many=True)
-    return Response({"commentaires":serializer.data})
+    return Response({"commentaires": serializer.data})
 
 @api_view(['POST'])
 def ajouter_commentaire(request):
@@ -93,7 +83,6 @@ def ajouter_commentaire(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
-
 
 @api_view(['PUT'])
 def update_commentaire(request, pk):
@@ -118,14 +107,11 @@ def delete_commentaire(request, pk):
     commentaire.delete()
     return Response({"message": "Commentaire supprimé"}, status=204)
 
-
-
 @api_view(['GET'])
 def get_all_reservations(request):
     reservations = Reservation.objects.all()
     serializer = ReservationSerializer(reservations, many=True)
     return Response(serializer.data)
-
 
 @api_view(['GET'])
 def get_reservation(request, pk):
@@ -137,7 +123,6 @@ def get_reservation(request, pk):
     serializer = ReservationSerializer(reservation)
     return Response(serializer.data)
 
-
 @api_view(['POST'])
 def create_reservation(request):
     serializer = ReservationSerializer(data=request.data)
@@ -145,7 +130,6 @@ def create_reservation(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
-
 
 @api_view(['PUT'])
 def update_reservation(request, pk):
@@ -159,7 +143,6 @@ def update_reservation(request, pk):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=400)
-
 
 @api_view(['DELETE'])
 def delete_reservation(request, pk):
